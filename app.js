@@ -1,34 +1,24 @@
 const express = require('express');
-const mongoose = require('mongoose');
-const recipeRoutes = require('./routes/recipes');
 const dotenv = require('dotenv');
+const mongoose = require('mongoose');
+const authRoutes = require('./routes/auth');
 
-// Load environment variables
 dotenv.config();
 
-// Create an Express application
 const app = express();
-
-// Middleware to parse JSON requests
 app.use(express.json());
 
-// Set up Mongoose connection
-mongoose.set('strictQuery', true); // Optional: to suppress warnings about strictQuery
-
-// Replace with your actual MongoDB connection string
-const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/RestFul_Api';
-
 // Connect to MongoDB
-mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => {
-    console.log('Database connected successfully');
-  })
-  .catch((error) => {
-    console.error('Database connection error:', error);
-  });
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}).then(() => console.log('MongoDB connected'))
+  .catch((err) => console.log('MongoDB connection error:', err));
 
-// Use routes
-app.use('/api/recipes', recipeRoutes);
+// Authentication routes
+app.use('/api/auth', authRoutes);
 
-// Export the app
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
 module.exports = app;
