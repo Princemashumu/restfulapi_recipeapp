@@ -1,29 +1,15 @@
-// Import the mongoose library
 const mongoose = require('mongoose');
 
-// Define the recipe schema using Mongoose
+// Define the schema for a recipe
 const recipeSchema = new mongoose.Schema({
-  // Title of the recipe
-  title: {
-    type: String, // The type of the field is String
-    required: [true, 'Please add a title'], // The title is required; if not provided, it returns this error message
-  },
-  // List of ingredients for the recipe
-  ingredients: {
-    type: [String], // The type is an array of Strings
-    required: [true, 'Please add some ingredients'], // Ingredients are required; returns this error message if not provided
-  },
-  // Instructions for preparing the recipe
-  instructions: {
-    type: String, // The type of the field is String
-    required: [true, 'Please add instructions'], // Instructions are required; returns this error message if not provided
-  },
-  // Timestamp for when the recipe was created
-  createdAt: {
-    type: Date, // The type is Date
-    default: Date.now, // Default value is the current date and time
-  },
-});
+  title: { type: String, required: true },
+  ingredients: { type: [String], required: true },
+  instructions: { type: String, required: true },
+  category: { type: String, required: true },
+  preparationTime: { type: Number, required: true },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // Reference to the user
+}, { timestamps: true });
 
-// Export the Recipe model based on the recipe schema
-module.exports = mongoose.model('Recipe', recipeSchema);
+// Create and export the Recipe model
+const Recipe = mongoose.model('Recipe', recipeSchema);
+module.exports = Recipe;
