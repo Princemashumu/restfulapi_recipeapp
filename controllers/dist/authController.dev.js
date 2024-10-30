@@ -1,7 +1,7 @@
 "use strict";
 
 // controllers/authController.js
-var User = require('../models/user'); // Make sure the path to your User model is correct
+var User = require('../models/user.js'); // Make sure the path to your User model is correct
 
 
 var bcrypt = require('bcryptjs');
@@ -30,7 +30,9 @@ exports.signup = function _callee(req, res) {
         case 4:
           _context.next = 6;
           return regeneratorRuntime.awrap(User.findOne({
-            email: email
+            email: {
+              $regex: new RegExp("^".concat(email, "$"), 'i')
+            }
           }));
 
         case 6:

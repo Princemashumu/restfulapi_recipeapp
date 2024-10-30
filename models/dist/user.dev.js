@@ -8,6 +8,12 @@ var userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  email: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  // Ensure this is unique
   password: {
     type: String,
     required: true

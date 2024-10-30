@@ -1,5 +1,5 @@
 // controllers/authController.js
-const User = require('../models/user'); // Make sure the path to your User model is correct
+const User = require('../models/user.js'); // Make sure the path to your User model is correct
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -12,11 +12,12 @@ exports.signup = async (req, res) => {
             return res.status(400).json({ message: 'All fields are required' });
         }
 
-        // Check if user already exists
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
-            return res.status(400).json({ message: 'User already exists' });
-        }
+        // Check if user already exists (case-insensitive)
+const existingUser = await User.findOne({ email: { $regex: new RegExp(`^${email}$`, 'i') } });
+if (existingUser) {
+    return res.status(400).json({ message: 'User already exists' });
+}
+
 
         // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
