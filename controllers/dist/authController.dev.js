@@ -1,7 +1,7 @@
 "use strict";
 
 // controllers/authController.js
-var User = require('./models/user'); // Make sure the User model is correctly imported
+var User = require('../models/user'); // Make sure the path to your User model is correct
 
 
 var bcrypt = require('bcryptjs');
@@ -9,7 +9,7 @@ var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 
 exports.signup = function _callee(req, res) {
-  var _req$body, username, email, password, existingUser, hashedPassword, newUser, token;
+  var _req$body, username, email, password, existingUser, hashedPassword, role, newUser, token;
 
   return regeneratorRuntime.async(function _callee$(_context) {
     while (1) {
@@ -51,19 +51,24 @@ exports.signup = function _callee(req, res) {
 
         case 11:
           hashedPassword = _context.sent;
-          // Create a new user
+          // Set default role as "user"
+          role = 'user'; // Create a new user
+
           newUser = new User({
             username: username,
             email: email,
-            password: hashedPassword
+            password: hashedPassword,
+            role: role // Add the role field here
+
           });
-          _context.next = 15;
+          _context.next = 16;
           return regeneratorRuntime.awrap(newUser.save());
 
-        case 15:
-          // Generate a JWT token
+        case 16:
+          // Generate a JWT token with role included
           token = jwt.sign({
-            userId: newUser._id
+            userId: newUser._id,
+            role: newUser.role
           }, process.env.JWT_SECRET, {
             expiresIn: '1h'
           });
@@ -71,11 +76,11 @@ exports.signup = function _callee(req, res) {
             message: 'User registered successfully',
             token: token
           });
-          _context.next = 23;
+          _context.next = 24;
           break;
 
-        case 19:
-          _context.prev = 19;
+        case 20:
+          _context.prev = 20;
           _context.t0 = _context["catch"](0);
           console.error(_context.t0); // Log the actual error to the console
 
@@ -83,10 +88,10 @@ exports.signup = function _callee(req, res) {
             message: 'Server error'
           });
 
-        case 23:
+        case 24:
         case "end":
           return _context.stop();
       }
     }
-  }, null, null, [[0, 19]]);
+  }, null, null, [[0, 20]]);
 };

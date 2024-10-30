@@ -6,8 +6,10 @@ const recipeSchema = new mongoose.Schema({
   ingredients: { type: [String], required: true },
   instructions: { type: String, required: true },
   category: { type: String, required: true },
-  preparationTime: { type: Number, required: true },
+  preparationTime: { type: Number, required: false },
+
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // Reference to the user
+
 }, { timestamps: true });
 
 // Create and export the Recipe model

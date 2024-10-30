@@ -4,25 +4,22 @@
 var jwt = require('jsonwebtoken');
 
 var auth = function auth(req, res, next) {
-  var authHeader = req.headers['authorization']; // Check if the authorization header exists and starts with 'Bearer'
+  var authHeader = req.headers['authorization'];
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(401).json({
-      message: 'No token provided'
+      message: 'Access denied: Token required'
     });
-  } // Extract the token part from 'Bearer <token>'
-
+  }
 
   var token = authHeader.split(' ')[1];
   jwt.verify(token, process.env.JWT_SECRET, function (err, decoded) {
-    if (err) {
-      return res.status(403).json({
-        message: 'Unauthorized'
-      });
-    }
+    if (err) return res.status(403).json({
+      message: 'Invalid or expired token'
+    });
+    req.userId = decoded.userId; // Assign user ID and role to request object
 
-    req.userId = decoded.userId; // Save user ID from token for later use
-
+    req.userRole = decoded.role;
     next();
   });
 };
