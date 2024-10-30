@@ -1,26 +1,23 @@
 "use strict";
 
-var Recipe = require('../models/recipe'); // Create a new recipe
+var Recipe = require('../models/Recipe'); // Create a new recipe
 
 
-exports.createRecipe = function _callee(req, res, next) {
+exports.createRecipe = function _callee(req, res) {
   var _req$body, title, ingredients, instructions, category, preparationTime, newRecipe;
 
   return regeneratorRuntime.async(function _callee$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
-          _context.prev = 0;
-          _req$body = req.body, title = _req$body.title, ingredients = _req$body.ingredients, instructions = _req$body.instructions, category = _req$body.category, preparationTime = _req$body.preparationTime; // Create a new recipe instance and set the userId from the authenticated user
-
+          _req$body = req.body, title = _req$body.title, ingredients = _req$body.ingredients, instructions = _req$body.instructions, category = _req$body.category, preparationTime = _req$body.preparationTime;
+          _context.prev = 1;
           newRecipe = new Recipe({
             title: title,
             ingredients: ingredients,
             instructions: instructions,
             category: category,
-            preparationTime: preparationTime,
-            userId: req.userId // Use the userId from the decoded token
-
+            preparationTime: preparationTime
           });
           _context.next = 5;
           return regeneratorRuntime.awrap(newRecipe.save());
@@ -32,27 +29,30 @@ exports.createRecipe = function _callee(req, res, next) {
 
         case 8:
           _context.prev = 8;
-          _context.t0 = _context["catch"](0);
-          next(_context.t0);
+          _context.t0 = _context["catch"](1);
+          res.status(500).json({
+            message: 'Failed to create recipe',
+            error: _context.t0
+          });
 
         case 11:
         case "end":
           return _context.stop();
       }
     }
-  }, null, null, [[0, 8]]);
+  }, null, null, [[1, 8]]);
 }; // Get all recipes with pagination
 
 
-exports.getRecipes = function _callee2(req, res, next) {
+exports.getRecipes = function _callee2(req, res) {
   var page, pageSize, total, recipes;
   return regeneratorRuntime.async(function _callee2$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
         case 0:
-          _context2.prev = 0;
           page = parseInt(req.query.page) || 1;
           pageSize = parseInt(req.query.pageSize) || 10;
+          _context2.prev = 2;
           _context2.next = 5;
           return regeneratorRuntime.awrap(Recipe.countDocuments());
 
@@ -74,19 +74,22 @@ exports.getRecipes = function _callee2(req, res, next) {
 
         case 12:
           _context2.prev = 12;
-          _context2.t0 = _context2["catch"](0);
-          next(_context2.t0);
+          _context2.t0 = _context2["catch"](2);
+          res.status(500).json({
+            message: 'Failed to fetch recipes',
+            error: _context2.t0
+          });
 
         case 15:
         case "end":
           return _context2.stop();
       }
     }
-  }, null, null, [[0, 12]]);
+  }, null, null, [[2, 12]]);
 }; // Get a recipe by ID
 
 
-exports.getRecipeById = function _callee3(req, res, next) {
+exports.getRecipeById = function _callee3(req, res) {
   var recipe;
   return regeneratorRuntime.async(function _callee3$(_context3) {
     while (1) {
@@ -116,7 +119,10 @@ exports.getRecipeById = function _callee3(req, res, next) {
         case 9:
           _context3.prev = 9;
           _context3.t0 = _context3["catch"](0);
-          next(_context3.t0);
+          res.status(500).json({
+            message: 'Failed to fetch recipe',
+            error: _context3.t0
+          });
 
         case 12:
         case "end":
@@ -127,7 +133,7 @@ exports.getRecipeById = function _callee3(req, res, next) {
 }; // Update a recipe by ID
 
 
-exports.updateRecipe = function _callee4(req, res, next) {
+exports.updateRecipe = function _callee4(req, res) {
   var updatedRecipe;
   return regeneratorRuntime.async(function _callee4$(_context4) {
     while (1) {
@@ -160,7 +166,10 @@ exports.updateRecipe = function _callee4(req, res, next) {
         case 9:
           _context4.prev = 9;
           _context4.t0 = _context4["catch"](0);
-          next(_context4.t0);
+          res.status(500).json({
+            message: 'Failed to update recipe',
+            error: _context4.t0
+          });
 
         case 12:
         case "end":
@@ -171,7 +180,7 @@ exports.updateRecipe = function _callee4(req, res, next) {
 }; // Delete a recipe by ID
 
 
-exports.deleteRecipe = function _callee5(req, res, next) {
+exports.deleteRecipe = function _callee5(req, res) {
   var deletedRecipe;
   return regeneratorRuntime.async(function _callee5$(_context5) {
     while (1) {
@@ -203,7 +212,10 @@ exports.deleteRecipe = function _callee5(req, res, next) {
         case 9:
           _context5.prev = 9;
           _context5.t0 = _context5["catch"](0);
-          next(_context5.t0);
+          res.status(500).json({
+            message: 'Failed to delete recipe',
+            error: _context5.t0
+          });
 
         case 12:
         case "end":

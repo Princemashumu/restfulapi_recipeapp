@@ -1,7 +1,6 @@
 "use strict";
 
-var mongoose = require('mongoose'); // Define the schema for a recipe
-
+var mongoose = require('mongoose');
 
 var recipeSchema = new mongoose.Schema({
   title: {
@@ -22,17 +21,7 @@ var recipeSchema = new mongoose.Schema({
   },
   preparationTime: {
     type: Number,
-    required: false
-  },
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
     required: true
-  } // Reference to the user
-
-}, {
-  timestamps: true
-}); // Create and export the Recipe model
-
-var Recipe = mongoose.model('Recipe', recipeSchema);
-module.exports = Recipe;
+  }
+});
+module.exports = mongoose.model('Recipe', recipeSchema);
