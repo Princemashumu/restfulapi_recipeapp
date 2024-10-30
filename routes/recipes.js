@@ -10,8 +10,8 @@ router.get('/', recipeController.getRecipes);
 router.get('/:id', recipeController.getRecipeById);
 
 // Protected routes for authenticated 'user' role
-router.post('/', auth, authorizeRole('user'), recipeController.createRecipe);
-router.put('/:id', auth, authorizeRole('user'), recipeController.updateRecipe);
-router.delete('/:id', auth, authorizeRole('user'), recipeController.deleteRecipe);
+router.post('/', auth, authorizeRole(['admin','user']), recipeController.createRecipe);
+router.put('/:id', auth, authorizeRole(['admin','user']), recipeController.updateRecipe);
+router.delete('/:id', auth, authorizeRole(['admin','user']), recipeController.deleteRecipe);
 
 module.exports = router;
